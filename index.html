@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<head>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <div id="container">
+
+    </div>
+    <script>
+    //on resize shift svg then run the selector functions
+    window.addEventListener("resize", getSvg)
+    
+    //define vars
+    var container = document.getElementById('container');
+    var obj, svg, links;
+    var counter = 0;
+
+    //inital display
+    var desk = window.innerWidth > 740;
+    var vg = desk ? '-01' : '-02';
+    container.innerHTML = `<object data="svgs/witz${vg}.svg"/>`;
+
+    //wait for it to load then grab obj and init
+    window.onload = function(e){
+        getSvg();   
+        main();
+    }
+
+    //set the SVG depending on the display size
+    function getSvg(){
+        var desk = window.innerWidth > window.innerHeight;
+        var vg = desk ? '-01' : '-02';
+        container.innerHTML = `<object data="svgs/witz${vg}.svg"/>`;
+        setTimeout(getObj,3000);
+        setTimeout(main,3001);
+    }
+
+    //define obj and svg vars
+    function getObj(){        
+        obj = container.getElementsByTagName('object')[0].contentDocument;
+        svg = obj.getElementsByTagName('svg')[0];
+    }
+
+    function main(){
+        setInterval(colorizer, 1)
+
+        links = svg.querySelectorAll("[id^='link']");
+        if (desk) {
+            deskRun();
+        }
+
+        
+    }
+
+    function deskRun(){
+        
+            lineMover();
+
+
+
+            // lines.forEach(function(l){
+            //     var array = d3.select(l).attr('points').split(' ').filter(function(n){ return n != "" });
+            //     var entry = array[0].split(',');
+            //     console.log(entry);
+            //     entry[1] = parseInt(entry[1]) + randInt(100);
+            //     array[0] = entry.join(',');
+            //     console.log(entry);
+            //     d3.select(l).attr('points', array);
+            // })
+    }
+
+function colorizer() {
+
+    var fucker = 20*Math.sin((2*Math.PI/1000)*counter);
+    var witzPaths = svg.querySelector("[id^='witz']").querySelectorAll("path");
+    var polyLines = svg.querySelectorAll("polyline");
+    if (counter % 3 ===0 && fucker > 19){
+        for (i=0;i<witzPaths.length;i++){
+            var one = Math.abs(Math.sin(counter))*255+randInt(10000);
+            var two = Math.abs(Math.sin(counter))*255+randInt(1000);
+            var three = Math.abs(Math.sin(counter))*randInt(1000);
+            witzPaths[i].setAttribute("fill", `rgb(${one},${two},${three})`);
+            witzPaths[i].setAttribute("opacity", Math.sin(counter));
+            if (polyLines[i]){
+                polyLines[i].setAttribute("fill", `rgb(${one},${two},${three})`);
+                polyLines[i].setAttribute("opacity", 200*Math.sin(counter));
+            }
+        }
+    } else {
+        for (i=0;i<witzPaths.length;i++){
+            witzPaths[i].setAttribute("fill", `rgb(${255},${255},${255})`);
+            witzPaths[i].setAttribute("opacity", 1);
+            if (polyLines[i]){
+                polyLines[i].setAttribute("fill", `rgb(${255},${255},${255})`);
+                polyLines[i].setAttribute("opacity", 1);
+            }
+        }
+    }
+    counter += 1;
+    
+}
+function lineMover (){
+        //get all lines
+        var lines = svg.querySelectorAll("[id^='s']");
+        //grab random line
+        var randLine = lines[randInt(lines.length)];
+        //get its points as a string
+        var pointsAttr = d3.select(randLine).attr('points');
+        //turn string into array and get rid of blanks
+        var linePoints = pointsAttr.split(' ').filter(function(n){ return n != "" });
+        //define a random index of the array
+        var randPointIndex = randInt(linePoints.length);
+        //grab the index and turn it into an array
+        var randPoint = linePoints[randPointIndex].split(',');
+        //define new x and y values with a random sum
+        var pX = parseFloat(randPoint[0])+ randInt(20);
+        var pY = parseFloat(randPoint[1])+ randInt(10);
+        //pass new points into the array
+        linePoints[randPointIndex] = [pX,pY];
+        //create the new line string
+        var newLine = linePoints.join(' ');
+        //transition between the new line and back to the old one and then loop forever
+        var dur = 200;
+        d3.select(randLine).transition()
+            .duration(dur)
+            .attr('points',newLine)
+            .on('end', function(){
+                    d3.select(this).transition().duration(dur).attr('points', pointsAttr)
+                    .on('end', function(){
+                    lineMover();
+                });
+            })
+}
+     
+
+//utility
+function randInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+    
+    </script>
+</body>
+</html>
+
