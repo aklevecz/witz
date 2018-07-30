@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <head>
-        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <link rel="shortcut icon" href="witzIcon.ico">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name=viewport content="width=device-width, initial-scale=1">
+
+        <title>hummus for life | witz hummus</title>
+        <meta name="description" content="witz hummus hummus hummus hummus hummus hummus hummus hummus hummus hummus hummus hummus hummus">
+
+        <meta property="og:image" content="linkPreview.png">
 </head>
 <body style="background-color:black">
     <div id="container">
 
     </div>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
     <script>
     //on resize shift svg then run the selector functions
     window.addEventListener("resize", getSvg)
@@ -42,30 +50,60 @@
         d3svg = d3.select(svg);
     }
     var fbLink = "https://www.facebook.com/witzhummus";
-    var igLink = "https://www.instagram.com/witzhummus/"
+    var igLink = "https://www.instagram.com/witzhummus/";
+    var pressLink = "http://www.findingberlin.com/hummus-witz-is-not-a-joke/";
     function createLinks(links) {
         console.log(links);
         for (var i = 0; i < links.length ; i++) {
             var cLink = links[i];
+            cLink.style.cursor = 'pointer';
             if (cLink.id.indexOf("link-facebook") >= 0) {
-                cLink.addEventListener("click", function(){window.open(fbLink)})
+                cLink.addEventListener("click", function(cLink){window.open(fbLink)})
+                cLink.addEventListener("mouseover", function(cLink){
+                    d3svg.selectAll('#facebook *').attr('fill', 'blue');
+                    d3svg.selectAll('#facebook *').attr('stroke', '#f05022');
+                });
+                //there is some serious jank in here
+                cLink.addEventListener("mouseout", function(cLink){
+                    d3svg.selectAll('#facebook *').attr('fill', 'none');
+                    d3svg.selectAll('#facebook *').attr('stroke', 'white');
+                    cLink.target.style.fill = 'white';
+                });
             }
             if (cLink.id.indexOf("link-instagram")>= 0) {
                 cLink.addEventListener("click", function(){window.open(igLink)})
+                cLink.addEventListener("mouseover", function(){
+                    d3svg.selectAll('#instagram *').attr('fill', 'blue');
+                    d3svg.selectAll('#instagram *').attr('stroke', '#f05022');
+                });
+                cLink.addEventListener("mouseout", function(cLink){
+                    d3svg.selectAll('#instagram *').attr('fill', 'none');
+                    d3svg.selectAll('#instagram *').attr('stroke', 'white');
+                    cLink.target.style.fill = 'white';
+                });
             }
             if (cLink.id.indexOf("link-location")>=0){
+                cLink.addEventListener("click", function(){window.open(igLink)})
+
                 cLink.addEventListener("mouseover", function(){
-                    console.log(d3svg.selectAll('#location *'));
                     d3svg.selectAll('#location *').attr('fill', 'blue');
                     d3svg.selectAll('#location *').attr('stroke', '#f05022');
+                });
+                cLink.addEventListener("mouseout", function(){
+                    d3svg.selectAll('#location *').attr('fill', 'none');
+                    d3svg.selectAll('#location *').attr('stroke', 'white');
                 })
             }
             if (cLink.id.indexOf("link-press")>=0){
+                cLink.addEventListener("click", function(){window.open(pressLink)})
                 cLink.addEventListener("mouseover", function(){
-                    console.log(d3svg.selectAll('#location *'));
                     d3svg.selectAll('#press *').attr('fill', '#f05022');
                     d3svg.selectAll('#press *').attr('stroke', 'blue');
-                })
+                });
+                cLink.addEventListener("mouseout", function(){
+                    d3svg.selectAll('#press *').attr('fill', 'none');
+                    d3svg.selectAll('#press *').attr('stroke', 'white');
+                });
             }
         }
     }
@@ -101,7 +139,8 @@
     }
 
 function colorizer() {
-    var fucker = 20*Math.sin((2*Math.PI/10000)*counter);
+    var fucker = 20*Math.sin((2*Math.PI/10000)*counter+Math.PI/2.5);
+    console.log(fucker);
     var witzPaths = svg.querySelector("[id^='witz']").querySelectorAll("path");
     var polyLines = svg.querySelectorAll("polyline");
     if (counter % 3 ===0 && fucker > 19.95){
