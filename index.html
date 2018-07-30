@@ -2,7 +2,7 @@
 <head>
         <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
-<body>
+<body style="background-color:black">
     <div id="container">
 
     </div>
@@ -14,6 +14,7 @@
     var container = document.getElementById('container');
     var obj, svg, links;
     var counter = 0;
+    var d3svg;
 
     //inital display
     var desk = window.innerWidth > 740;
@@ -23,7 +24,6 @@
     //wait for it to load then grab obj and init
     window.onload = function(e){
         getSvg();   
-        main();
     }
 
     //set the SVG depending on the display size
@@ -31,20 +31,51 @@
         var desk = window.innerWidth > window.innerHeight;
         var vg = desk ? '-01' : '-02';
         container.innerHTML = `<object data="svgs/witz${vg}.svg"/>`;
-        setTimeout(getObj,3000);
-        setTimeout(main,3001);
+        setTimeout(getObj,1000);
+        setTimeout(function(){main(desk);},1001);
     }
 
     //define obj and svg vars
     function getObj(){        
         obj = container.getElementsByTagName('object')[0].contentDocument;
         svg = obj.getElementsByTagName('svg')[0];
+        d3svg = d3.select(svg);
+    }
+    var fbLink = "https://www.facebook.com/witzhummus";
+    var igLink = "https://www.instagram.com/witzhummus/"
+    function createLinks(links) {
+        console.log(links);
+        for (var i = 0; i < links.length ; i++) {
+            var cLink = links[i];
+            if (cLink.id.indexOf("link-facebook") >= 0) {
+                cLink.addEventListener("click", function(){window.open(fbLink)})
+            }
+            if (cLink.id.indexOf("link-instagram")>= 0) {
+                cLink.addEventListener("click", function(){window.open(igLink)})
+            }
+            if (cLink.id.indexOf("link-location")>=0){
+                cLink.addEventListener("mouseover", function(){
+                    console.log(d3svg.selectAll('#location *'));
+                    d3svg.selectAll('#location *').attr('fill', 'blue');
+                    d3svg.selectAll('#location *').attr('stroke', '#f05022');
+                })
+            }
+            if (cLink.id.indexOf("link-press")>=0){
+                cLink.addEventListener("mouseover", function(){
+                    console.log(d3svg.selectAll('#location *'));
+                    d3svg.selectAll('#press *').attr('fill', '#f05022');
+                    d3svg.selectAll('#press *').attr('stroke', 'blue');
+                })
+            }
+        }
     }
 
-    function main(){
-        setInterval(colorizer, 1)
-
+    function main(desk){
+        setTimeout(()=>{setInterval(colorizer, 1);}, 1000);
+        
         links = svg.querySelectorAll("[id^='link']");
+        createLinks(links);
+        console.log(desk);
         if (desk) {
             deskRun();
         }
@@ -70,11 +101,10 @@
     }
 
 function colorizer() {
-
-    var fucker = 20*Math.sin((2*Math.PI/1000)*counter);
+    var fucker = 20*Math.sin((2*Math.PI/10000)*counter);
     var witzPaths = svg.querySelector("[id^='witz']").querySelectorAll("path");
     var polyLines = svg.querySelectorAll("polyline");
-    if (counter % 3 ===0 && fucker > 19){
+    if (counter % 3 ===0 && fucker > 19.95){
         for (i=0;i<witzPaths.length;i++){
             var one = Math.abs(Math.sin(counter))*255+randInt(10000);
             var two = Math.abs(Math.sin(counter))*255+randInt(1000);
@@ -86,12 +116,12 @@ function colorizer() {
                 polyLines[i].setAttribute("opacity", 200*Math.sin(counter));
             }
         }
-    } else {
+    } else if (fucker < 19 && fucker > 18.8) {
         for (i=0;i<witzPaths.length;i++){
-            witzPaths[i].setAttribute("fill", `rgb(${255},${255},${255})`);
+            witzPaths[i].setAttribute("fill", `white`);
             witzPaths[i].setAttribute("opacity", 1);
             if (polyLines[i]){
-                polyLines[i].setAttribute("fill", `rgb(${255},${255},${255})`);
+                polyLines[i].setAttribute("fill", `white`);
                 polyLines[i].setAttribute("opacity", 1);
             }
         }
@@ -100,6 +130,7 @@ function colorizer() {
     
 }
 function lineMover (){
+    console.log("move it");
         //get all lines
         var lines = svg.querySelectorAll("[id^='s']");
         //grab random line
