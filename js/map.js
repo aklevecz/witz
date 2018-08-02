@@ -30,9 +30,10 @@ tint.className = 'tint';
 var el = document.createElement('div');
 el.className = 'marker';
 
-el.onclick = (e) => zoomToFeature(e);
-function zoomToFeature(e) {
-    map.setZoom(20);
+tint.onclick = zoomToFeature;
+el.onclick = zoomToFeature;
+function zoomToFeature() {
+    map.flyTo({center: [13.404307, 52.490925],zoom:17});
 }
 
 
@@ -54,10 +55,10 @@ new mapboxgl.Marker(tint)
 
 
 
-// new mapboxgl.Marker(el)
-//   .setLngLat(geojson.geometry.coordinates)
-//   .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-//   .setHTML('<h3>' + geojson.properties.name + '</h3><p>' + geojson.properties.description + '</p>'))
-//   .addTo(map);
+new mapboxgl.Marker(el)
+  .setLngLat(geojson.geometry.coordinates)
+  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+  .setHTML('<h3>' + geojson.properties.name + '</h3><p>' + geojson.properties.description + '</p>'))
+  .addTo(map);
 
 }

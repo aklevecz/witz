@@ -26,7 +26,7 @@
 <body style="background-color:black">
 
     <div id="container"></div>
-    <div id='map' style='width: 500px; height: 500px; display:block'></div>
+    <div id='map' style='width: 50%; height: 500px; display:none;'></div>
 
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -35,8 +35,22 @@
     <script src="js/utility.js"></script>
     <script>
     //on resize shift svg then run the selector functions
-    window.addEventListener("resize", getSvg)
+    window.addEventListener("resize", resize)
     
+    function resize() {
+        var desk = window.innerWidth > window.innerHeight;
+        getSvg();
+        var theMap = document.getElementById('map');
+        if (desk) {
+            console.log('MAP');
+            theMap.style.width = "50%";
+            map.resize();
+        } else {
+            console.log('MAP100');
+            theMap.style.width = "100%";
+            map.resize();
+        }
+    }
     //define vars
     var container = document.getElementById('container');
     var obj, svg, links;

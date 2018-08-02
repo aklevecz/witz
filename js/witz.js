@@ -1,6 +1,6 @@
 //set the SVG depending on the display size
 function getSvg(){
-    var desk = window.innerWidth > window.innerHeight;
+    // var desk = window.innerWidth > window.innerHeight;
     var vg = desk ? '-01' : '-02';
     container.innerHTML = `<object data="svgs/witz${vg}.svg"/>`;
     setTimeout(getObj,1000);
