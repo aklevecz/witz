@@ -1,0 +1,10 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [13.404307, 52.490925]
+  },
+  "properties": {
+    "name": "witz hummus"
+  }
+}
