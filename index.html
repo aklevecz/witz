@@ -47,16 +47,21 @@
 
     //inital display
     var desk = window.innerWidth > 740;
+    var width = window.innerWidth;
     var vg = desk ? '-01' : '-02';
     container.innerHTML = `<object data="svgs/witz${vg}.svg"/>`;
     //on resize shift svg then run the selector functions
     window.addEventListener("resize", resize)
     
     function resize() {
-        var desk = window.innerWidth > window.innerHeight;
-        getSvg(desk);
-        mapSize(desk);
+        var desk= window.innerWidth > window.innerHeight;
+        if (width !== window.innerWidth){
+            getSvg(desk);
+            mapSize(desk);
+        }
+        width = window.innerWidth;
     }
+
 
     function mapSize(desk){
         if (desk) {
