@@ -1,4 +1,5 @@
 //map
+var witzLink="https://www.google.de/maps/place/witz+hummus/@52.4908947,13.4043038,15z/data=!4m5!3m4!1s0x0:0xe6667ee7f55334c2!8m2!3d52.4908947!4d13.4043038";
 mapboxgl.accessToken = 'pk.eyJ1IjoidGVoLXJhcHRvciIsImEiOiJjamdmZDExMTYyaXVnMnhxZTN6ZDNncmxnIn0.PZyUBVM9BCLM65ozSvBb1A';
 
 var map = new mapboxgl.Map({
@@ -60,7 +61,7 @@ new mapboxgl.Marker(tint)
 new mapboxgl.Marker(el)
   .setLngLat(geojson.geometry.coordinates)
   .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-  .setHTML('<h3>' + geojson.properties.name + '</h3><p>' + geojson.properties.description + '</p>'))
+  .setHTML('<h3>' + geojson.properties.name + '</h3><p>' + geojson.properties.description + '<br/><a style="color:red" href="'+witzLink+'">**GO**</a></p>'))
   .addTo(map);
 
 }

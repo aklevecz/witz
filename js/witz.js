@@ -19,7 +19,6 @@ var pressLink = "http://www.findingberlin.com/hummus-witz-is-not-a-joke/";
 
 //yikes
 function createLinks(links) {
-    console.log(links);
     for (var i = 0; i < links.length ; i++) {
         var cLink = links[i];
         cLink.style.cursor = 'pointer';
@@ -104,7 +103,6 @@ function colorizer() {
     
 }
 function lineMover (){
-    console.log("move it");
         //get all lines
         var lines = svg.querySelectorAll("[id^='s']");
         //grab random line

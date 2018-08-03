@@ -67,11 +67,15 @@
         if (desk) {
             theMap.style.width = "37%";
             theMap.style.left = "33%";
+            theMap.style.top= "12%";
+            theMap.style.height=window.innerHeight+'px';
 
             map.resize();
         } else {
             theMap.style.width = "100%";
             theMap.style.left = "0%";
+            theMap.style.top= "16%";
+            theMap.style.height="383px";
 
             map.resize();
         }
@@ -85,7 +89,7 @@
     }
 
     function main(desk){
-        setTimeout(()=>{setInterval(colorizer, 1);}, 1000);
+        //setTimeout(()=>{setInterval(colorizer, 1);}, 1000);
         
         setTimeout(() => {
             links = svg.querySelectorAll("[id^='link']");
@@ -98,7 +102,7 @@
     }
 
     function deskRun(){       
-            lineMover();
+            setTimeout(lineMover,1000);
     }
 
     
