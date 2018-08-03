@@ -26,7 +26,8 @@
 <body style="background-color:black">
 
     <div id="container"></div>
-    <div id='map' style='width: 50%; height: 500px; display:none;'></div>
+    <div id="unmap" style="position:absolute;width:100%;height:100%;top:0;display:none"></div>
+    <div id='map' style='display:none;'></div>
 
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -34,37 +35,48 @@
     <script src="js/map.js"></script>
     <script src="js/utility.js"></script>
     <script>
-    //on resize shift svg then run the selector functions
-    window.addEventListener("resize", resize)
-    
-    function resize() {
-        var desk = window.innerWidth > window.innerHeight;
-        getSvg();
-        var theMap = document.getElementById('map');
-        if (desk) {
-            console.log('MAP');
-            theMap.style.width = "50%";
-            map.resize();
-        } else {
-            console.log('MAP100');
-            theMap.style.width = "100%";
-            map.resize();
-        }
-    }
+
     //define vars
     var container = document.getElementById('container');
     var obj, svg, links;
     var counter = 0;
     var d3svg;
+    var theMap = document.getElementById('map');
+    var unMap = document.getElementById('unmap');
+    unMap.addEventListener("click" ,  ()=>{theMap.style.display="none";unMap.style.display="none";});
 
     //inital display
     var desk = window.innerWidth > 740;
     var vg = desk ? '-01' : '-02';
     container.innerHTML = `<object data="svgs/witz${vg}.svg"/>`;
+    //on resize shift svg then run the selector functions
+    window.addEventListener("resize", resize)
+    
+    function resize() {
+        var desk = window.innerWidth > window.innerHeight;
+        getSvg(desk);
+        mapSize(desk);
+    }
+
+    function mapSize(desk){
+        if (desk) {
+            theMap.style.width = "37%";
+            theMap.style.left = "33%";
+
+            map.resize();
+        } else {
+            theMap.style.width = "100%";
+            theMap.style.left = "0%";
+
+            map.resize();
+        }
+    }
+
 
     //wait for it to load then grab obj and init
     window.onload = function(e){
-        getSvg();   
+        getSvg(desk);   
+        mapSize(desk);
     }
 
     function main(desk){

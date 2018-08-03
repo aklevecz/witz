@@ -38,7 +38,9 @@ function zoomToFeature() {
 
 
 function generateMap() {
+unMap.style.display = "block";
 document.getElementById('map').style.display = "block";
+map.resize();
 // make a marker for each feature and add to the map
 
 new mapboxgl.Marker(tint)

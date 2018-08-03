@@ -28,8 +28,9 @@
     #map {
         position: absolute;
         top: 12%;
-        //left: 30%;
-        width: 100%;
+        width:100%;
+        height: 700px;
+        left: 33%;
     }
     .marker {
         background-image: url('../witzmap-icon.png');
